@@ -1,0 +1,6 @@
+* Understand the code
+* Steps to run the code:
+1) File -> New -> Project -> Win32 GUI project
+2) File -> New -> Class -> Class name: shape
+3) Replace the files: main.cpp, shape.h, shape.cpp with the files included here
+4) Build -> Build and run
