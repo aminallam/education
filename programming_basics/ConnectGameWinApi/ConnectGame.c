@@ -14,7 +14,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 
 #include <windows.h>
-#include <cstdio>
+#include <stdio.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,7 +23,7 @@
 #define PLAY2_CHAR 'o'
 #define BORDER_CHAR '#'
 
-struct ConnectGame
+typedef struct
 {
 	char**	board;
 	int		n, m, r;
@@ -32,7 +32,8 @@ struct ConnectGame
 	int		num;
 	int*	num_col;
 	int		last_play_col;
-};
+}
+ConnectGame;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -41,14 +42,14 @@ void InitializeGame(ConnectGame* g, int cn, int cm, int cr)
 	int i,j;
 	g->n=cn; g->m=cm; g->r=cr;
 
-	g->board=new char*[g->n+2];
-	for(i=0;i<g->n+2;i++) g->board[i]=new char[g->m+2];
+	g->board=(char**)malloc((g->n+2)*sizeof(char*));
+	for(i=0;i<g->n+2;i++) g->board[i]=(char*)malloc((g->m+2)*sizeof(char));
 
 	for(i=0;i<g->n+2;i++) for(j=0;j<g->m+2;j++) g->board[i][j]=BORDER_CHAR;
 	for(i=1;i<=g->n;i++) for(j=1;j<=g->m;j++) g->board[i][j]=EMPTY_CHAR;
 
 	g->num=0;
-	g->num_col=new int[g->m];
+	g->num_col=(int*)malloc((g->m)*sizeof(int));
 	for(i=0;i<g->m;i++) g->num_col[i]=0;
 
 	g->last_play_col=-1;
@@ -60,29 +61,29 @@ void InitializeGame(ConnectGame* g, int cn, int cm, int cr)
 void DestroyGame(ConnectGame* g)
 {
 	int i;
-	for(i=0;i<g->n+2;i++) delete[] g->board[i];
-	delete[] g->board;
-	delete[] g->num_col;
+	for(i=0;i<g->n+2;i++) free(g->board[i]);
+	free(g->board);
+	free(g->num_col);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-bool IsFull(ConnectGame* g)
+BOOL IsFull(ConnectGame* g)
 {
 	return g->num==g->n*g->m;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-bool PlayTurn(ConnectGame* g, int col)
+BOOL PlayTurn(ConnectGame* g, int col)
 {
 	if(col<0 || col>=g->m || g->num_col[col]==g->n)
-		return false;
+		return FALSE;
 	g->board[g->num_col[col]+1][col+1]=g->cur_player;
 	g->num_col[col]++;
 	g->num++;
 	g->last_play_col=col;
-	return true;
+	return TRUE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -238,10 +239,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-struct DialogBoxData
+typedef struct
 {
 	int n,m,r;
-};
+}
+DialogBoxData;
 
 LRESULT CALLBACK WndProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
