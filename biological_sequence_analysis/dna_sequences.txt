@@ -1,0 +1,4 @@
+http://gage.cbcb.umd.edu/data/Staphylococcus_aureus/Data.original/
+frag_1.fastq
+frag_2.fastq
+genome.fasta

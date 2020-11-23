@@ -1,0 +1,3 @@
+https://www.uniprot.org/uniprot/?query=reviewed:yes
+reviewed:yes AND organism:"Homo sapiens (Human) [9606]"
+reviewed:yes AND organism:"Mus musculus (Mouse) [10090]"
